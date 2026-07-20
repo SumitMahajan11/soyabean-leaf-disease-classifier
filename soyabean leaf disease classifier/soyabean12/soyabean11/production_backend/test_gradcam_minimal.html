@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grad-CAM Toggle Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; }
+        #resultImageContainer {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            max-width: 600px;
+            border: 2px solid #ddd;
+        }
+        #resultImage {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        #gradcamOverlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+            object-fit: cover;
+        }
+        button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover { background: #5568d3; }
+        .status { margin: 10px 0; padding: 10px; background: #e3f2fd; border-left: 4px solid #2196f3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Grad-CAM Overlay Toggle Test</h1>
+        
+        <div class="status" id="status">Status: Initializing...</div>
+        
+        <div id="resultImageContainer">
+            <img id="resultImage" alt="Base Image" src="https://via.placeholder.com/600x400/4caf50/ffffff?text=Base+Image">
+            <img id="gradcamOverlay" alt="Grad-CAM Overlay" src="https://via.placeholder.com/600x400/f44336/ffffff?text=Grad-CAM+Overlay">
+        </div>
+        
+        <div>
+            <button id="toggleGradcam">Show AI Focus (Grad-CAM)</button>
+        </div>
+        
+        <div class="status">
+            <strong>Console Log:</strong>
+            <pre id="log" style="margin: 5px 0 0 0; font-size: 12px;"></pre>
+        </div>
+    </div>
+
+    <script>
+        const log = document.getElementById('log');
+        const status = document.getElementById('status');
+        
+        function addLog(msg) {
+            const timestamp = new Date().toLocaleTimeString();
+            log.textContent += `[${timestamp}] ${msg}\n`;
+            console.log(msg);
+        }
+
+        // Initialize
+        const toggleBtn = document.getElementById('toggleGradcam');
+        const overlayImg = document.getElementById('gradcamOverlay');
+        const baseImg = document.getElementById('resultImage');
+        const container = document.getElementById('resultImageContainer');
+        
+        addLog('✅ Elements loaded');
+        addLog(`Base image display: ${baseImg.style.display || 'default'}`);
+        addLog(`Overlay display: ${overlayImg.style.display || 'default'}`);
+        addLog(`Overlay opacity: ${overlayImg.style.opacity}`);
+        
+        // Setup overlay
+        overlayImg.style.display = 'block';
+        overlayImg.style.opacity = '0';
+        status.textContent = 'Status: Ready - Click button to toggle';
+        
+        // Toggle handler
+        toggleBtn.onclick = () => {
+            const isShowing = overlayImg.style.opacity === '1';
+            
+            addLog(`🖱️ Button clicked - Current state: ${isShowing ? 'showing' : 'hidden'}`);
+            addLog(`  Before: base display=${baseImg.style.display}, overlay opacity=${overlayImg.style.opacity}`);
+            
+            if (isShowing) {
+                overlayImg.style.opacity = '0';
+                toggleBtn.textContent = 'Show AI Focus (Grad-CAM)';
+                status.textContent = 'Status: Overlay hidden (opacity: 0)';
+                addLog('  Action: Hide overlay');
+            } else {
+                overlayImg.style.opacity = '1';
+                toggleBtn.textContent = 'Hide AI Focus';
+                status.textContent = 'Status: Overlay visible (opacity: 1)';
+                addLog('  Action: Show overlay');
+            }
+            
+            addLog(`  After: base display=${baseImg.style.display}, overlay opacity=${overlayImg.style.opacity}`);
+            addLog(`  Base image src exists: ${!!baseImg.src}`);
+            addLog(`  Overlay image src exists: ${!!overlayImg.src}`);
+        };
+        
+        addLog('✅ Toggle handler attached');
+    </script>
+</body>
+</html>

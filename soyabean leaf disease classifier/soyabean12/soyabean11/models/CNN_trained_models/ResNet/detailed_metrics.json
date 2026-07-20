@@ -1,0 +1,91 @@
+{
+    "model_name": "ResNet",
+    "overall_accuracy": 0.8597938144329897,
+    "classification_report": {
+        "Bacterial Blight": {
+            "precision": 0.8210526315789474,
+            "recall": 0.9397590361445783,
+            "f1-score": 0.8764044943820225,
+            "support": 83.0
+        },
+        "Brown Spot": {
+            "precision": 0.967391304347826,
+            "recall": 0.978021978021978,
+            "f1-score": 0.9726775956284153,
+            "support": 91.0
+        },
+        "Caterpillar Pest": {
+            "precision": 0.5384615384615384,
+            "recall": 0.875,
+            "f1-score": 0.6666666666666666,
+            "support": 16.0
+        },
+        "Ferrugen": {
+            "precision": 1.0,
+            "recall": 0.782608695652174,
+            "f1-score": 0.8780487804878049,
+            "support": 23.0
+        },
+        "Healthy": {
+            "precision": 0.8902439024390244,
+            "recall": 0.9125,
+            "f1-score": 0.9012345679012346,
+            "support": 160.0
+        },
+        "Mosaic Virus": {
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1-score": 0.5,
+            "support": 30.0
+        },
+        "Rust": {
+            "precision": 0.7857142857142857,
+            "recall": 0.5238095238095238,
+            "f1-score": 0.6285714285714286,
+            "support": 21.0
+        },
+        "Septoria": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 8.0
+        },
+        "Southern Blight": {
+            "precision": 0.4666666666666667,
+            "recall": 1.0,
+            "f1-score": 0.6363636363636364,
+            "support": 7.0
+        },
+        "Sudden Death Syndrome": {
+            "precision": 0.8148148148148148,
+            "recall": 1.0,
+            "f1-score": 0.8979591836734694,
+            "support": 22.0
+        },
+        "Vein Necrosis": {
+            "precision": 0.9047619047619048,
+            "recall": 1.0,
+            "f1-score": 0.95,
+            "support": 19.0
+        },
+        "Yellow Mosaic": {
+            "precision": 1.0,
+            "recall": 0.6,
+            "f1-score": 0.75,
+            "support": 5.0
+        },
+        "accuracy": 0.8597938144329897,
+        "macro avg": {
+            "precision": 0.765758920732084,
+            "recall": 0.7454193805801324,
+            "f1-score": 0.7214938628062232,
+            "support": 485.0
+        },
+        "weighted avg": {
+            "precision": 0.8662215565059838,
+            "recall": 0.8597938144329897,
+            "f1-score": 0.8464416519862662,
+            "support": 485.0
+        }
+    }
+}

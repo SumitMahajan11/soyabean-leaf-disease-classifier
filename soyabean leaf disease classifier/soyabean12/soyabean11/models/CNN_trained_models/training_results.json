@@ -1,0 +1,6 @@
+{
+    "EfficientNet_B4": {
+        "val_accuracy": 0.9420062695924765,
+        "test_accuracy": 0.9295774647887324
+    }
+}

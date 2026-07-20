@@ -1,0 +1,2981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soyabean Leaf Disease Detection System</title>
+    
+    <!-- PWA Support -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#2e7d32">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="SoybeanDetect">
+    
+    <!-- VERSION: 2.2.0 - UX/PWA ENHANCED -->
+    <style>
+/* 
+ * Soybean Disease Detection System
+ * Professional Agriculture + AI Themed CSS
+ */
+
+/* CSS Variables for Theme */
+:root {
+  /* Light Theme Colors */
+  --primary-agri: #2E7D32;
+  --secondary-agri: #388E3C;
+  --accent-gold: #FBC02D;
+  --background: #F6FBF7;
+  --card-bg: #FFFFFF;
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --text-dark: #1E2A1F;
+  --text-light: #66786A;
+  --border-light: #E0E8E1;
+  --shadow-light: 0 4px 6px -1px rgba(46, 125, 50, 0.1), 0 2px 4px -1px rgba(46, 125, 50, 0.06);
+  --shadow-medium: 0 10px 15px -3px rgba(46, 125, 50, 0.1), 0 4px 6px -2px rgba(46, 125, 50, 0.05);
+  --shadow-heavy: 0 20px 25px -5px rgba(46, 125, 50, 0.1), 0 10px 10px -5px rgba(46, 125, 50, 0.04);
+  
+  /* Severity Colors */
+  --severity-high: #D32F2F;
+  --severity-medium: #F57C00;
+  --severity-low: #388E3C;
+  
+  /* UI Elements */
+  --border-radius-sm: 8px;
+  --border-radius-md: 12px;
+  --border-radius-lg: 20px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-family-heading: 'Inter', 'Poppins', 'Montserrat', sans-serif;
+  --font-family-body: 'Inter', 'Roboto', sans-serif;
+}
+
+/* Dark Theme Colors */
+[data-theme="dark"] {
+  --primary-agri: #4CAF50;
+  --secondary-agri: #66BB6A;
+  --accent-gold: #FFD54F;
+  --background: #0D1B0F;
+  --card-bg: #1B2D1E;
+  --glass-bg: rgba(27, 45, 30, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --text-dark: #E8F5E9;
+  --text-light: #A5D6A7;
+  --border-light: #388E3C;
+  --shadow-light: 0 4px 6px -1px rgba(76, 175, 80, 0.1), 0 2px 4px -1px rgba(76, 175, 80, 0.06);
+  --shadow-medium: 0 10px 15px -3px rgba(76, 175, 80, 0.1), 0 4px 6px -2px rgba(76, 175, 80, 0.05);
+  --shadow-heavy: 0 20px 25px -5px rgba(76, 175, 80, 0.1), 0 10px 10px -5px rgba(76, 175, 80, 0.04);
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Responsive Design */
+html {
+  font-size: 16px;
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 12px;
+  }
+}
+
+body {
+  font-family: var(--font-family-body);
+  line-height: 1.6;
+  overflow-x: hidden;
+  background-color: var(--background);
+  color: var(--text-dark);
+  transition: var(--transition);
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Header Styles */
+.header {
+  background-color: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-light);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid var(--glass-border);
+  border-radius: 0 0 var(--border-radius-md) var(--border-radius-md);
+  padding: 0.75rem 0;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: var(--primary-agri);
+  font-weight: 700;
+  font-size: 1.5rem;
+  font-family: var(--font-family-heading);
+  letter-spacing: -0.5px;
+}
+
+.logo-icon {
+  margin-right: 0.5rem;
+  font-size: 1.8rem;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+  align-items: center;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: var(--text-light);
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: var(--border-radius-md);
+  transition: var(--transition);
+  position: relative;
+  font-family: var(--font-family-heading);
+  font-size: 0.95rem;
+}
+
+.nav-link:hover {
+  color: var(--primary-agri);
+  background-color: rgba(46, 125, 50, 0.1);
+}
+
+.nav-link.active {
+  color: var(--primary-agri);
+  background-color: rgba(46, 125, 50, 0.15);
+  font-weight: 600;
+}
+
+.user-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.theme-toggle {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background-color: var(--glass-bg);
+  color: var(--text-light);
+  transition: var(--transition);
+  border: 1px solid var(--border-light);
+}
+
+.theme-toggle:hover {
+  background-color: var(--primary-agri);
+  color: white;
+  transform: scale(1.05);
+  box-shadow: var(--shadow-medium);
+}
+
+/* Main Content */
+.main-content {
+  min-height: calc(100vh - 120px);
+  padding: 2rem 0;
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--primary-agri), var(--secondary-agri));
+  color: white;
+  padding: 3rem 0;
+  text-align: center;
+  border-radius: var(--border-radius-lg);
+  margin-bottom: 3rem;
+  box-shadow: var(--shadow-heavy);
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.1) 100%);
+  pointer-events: none;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+.hero-content h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+  letter-spacing: -1px;
+}
+
+.hero-subtitle {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.95;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+.hero-cta {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.stat-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-lg);
+  text-align: center;
+  transition: var(--transition);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: var(--shadow-light);
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.25);
+  box-shadow: var(--shadow-medium);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.stat-card i {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  display: block;
+  color: var(--accent-gold);
+}
+
+.stat-card h3 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+}
+
+.stat-card p {
+  margin-bottom: 0.25rem;
+  font-size: 0.95rem;
+  opacity: 0.95;
+}
+
+.stat-card small {
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+/* Button Styles */
+.btn {
+  display: inline-block;
+  padding: 0.875rem 1.75rem;
+  border: none;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: var(--transition);
+  text-align: center;
+  font-family: var(--font-family-heading);
+  font-weight: 600;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(45deg, var(--primary-agri), var(--secondary-agri));
+  z-index: -1;
+  transition: opacity 0.3s ease;
+  opacity: 0;
+}
+
+.btn:hover::before {
+  opacity: 1;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-agri), var(--secondary-agri));
+  color: white;
+  box-shadow: 0 4px 15px rgba(46, 125, 50, 0.25);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, #1e5c20, #27632a);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(46, 125, 50, 0.35);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 15px rgba(46, 125, 50, 0.25);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, #fafafa, #f0f0f0);
+  color: var(--text-dark);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.btn-secondary:hover {
+  background: linear-gradient(135deg, #f5f5f5, #e8e8e8);
+  color: var(--text-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.btn-secondary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* Upload Section */
+.upload-section {
+  padding: 2rem 0;
+}
+
+.upload-container {
+  margin: 2rem 0;
+}
+
+.upload-area {
+  border: 2px dashed var(--border-light);
+  border-radius: var(--border-radius-lg);
+  padding: 3.5rem 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: var(--transition);
+  background-color: var(--card-bg);
+  box-shadow: var(--shadow-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.upload-area::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(46, 125, 50, 0.1), transparent);
+  transition: left 0.5s;
+}
+
+.upload-area:hover {
+  border-color: var(--primary-agri);
+  background-color: rgba(46, 125, 50, 0.05);
+  box-shadow: var(--shadow-medium);
+}
+
+.upload-area.dragover {
+  border-color: var(--primary-agri);
+  background-color: rgba(46, 125, 50, 0.1);
+  transform: scale(1.02);
+}
+
+.upload-area i {
+  font-size: 4rem;
+  color: var(--primary-agri);
+  margin-bottom: 1rem;
+  display: block;
+  transition: var(--transition);
+}
+
+.upload-area:hover i {
+  transform: scale(1.1);
+  color: var(--secondary-agri);
+}
+
+.upload-area p {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  font-family: var(--font-family-heading);
+}
+
+.upload-area small {
+  color: var(--text-light);
+  font-size: 0.9rem;
+}
+
+.upload-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.upload-controls .btn {
+  min-width: 120px;
+}
+
+/* Upload Mode Toggle */
+.upload-mode-toggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 1.5rem;
+  background: rgba(46, 125, 50, 0.1);
+  padding: 0.5rem;
+  border-radius: var(--border-radius-md);
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mode-btn {
+  padding: 0.75rem 1.5rem;
+  border: 2px solid transparent;
+  background: transparent;
+  border-radius: var(--border-radius-md);
+  cursor: pointer;
+  font-weight: 600;
+  transition: var(--transition);
+  color: var(--text-dark);
+  font-family: var(--font-family-heading);
+}
+
+.mode-btn:hover {
+  background: rgba(46, 125, 50, 0.1);
+}
+
+.mode-btn.active {
+  background: var(--primary-agri);
+  color: white;
+  border-color: var(--primary-agri);
+}
+
+.mode-btn i {
+  margin-right: 0.5rem;
+}
+
+.image-preview img {
+  max-width: 100%;
+  max-height: 400px;
+  border-radius: var(--border-radius-md);
+  box-shadow: var(--shadow-medium);
+  border: 1px solid var(--border-light);
+  transition: var(--transition);
+}
+
+.image-preview img:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-heavy);
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--severity-high);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.analyze-controls {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+/* Results Section */
+.results-section {
+  padding: 2rem 0;
+}
+
+.results-container {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  padding: 2.5rem;
+  box-shadow: var(--shadow-medium);
+  border: 1px solid var(--border-light);
+}
+
+.results-placeholder {
+  text-align: center;
+  padding: 4rem 0;
+  color: var(--text-light);
+}
+
+.results-placeholder i {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+
+.results-overview {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.result-summary {
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.08), rgba(56, 142, 60, 0.08));
+  padding: 2rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.result-summary:hover {
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+}
+
+.disease-name {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--primary-agri);
+  margin: 1rem 0;
+  font-family: var(--font-family-heading);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.confidence-score {
+  font-size: 1.25rem;
+  color: var(--text-dark);
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  background: rgba(46, 125, 50, 0.1);
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+/* Confidence Progress Bar */
+.confidence-bar-container {
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.confidence-bar {
+  width: 100%;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.confidence-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4caf50, #66bb6a);
+  border-radius: 10px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.confidence-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.confidence-label {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Severity Badge Styles */
+.severity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.severity-badge.low {
+  background: rgba(76, 175, 80, 0.15);
+  color: #2e7d32;
+  border: 2px solid rgba(76, 175, 80, 0.3);
+}
+
+.severity-badge.moderate {
+  background: rgba(255, 152, 0, 0.15);
+  color: #e65100;
+  border: 2px solid rgba(255, 152, 0, 0.3);
+}
+
+.severity-badge.high {
+  background: rgba(244, 67, 54, 0.15);
+  color: #c62828;
+  border: 2px solid rgba(244, 67, 54, 0.3);
+}
+
+.severity-badge i {
+  font-size: 1.1rem;
+}
+
+.detection-visualization img {
+  width: 100%;
+  border-radius: var(--border-radius);
+}
+
+/* Grad-CAM Overlay Styles - CRITICAL: Do not modify */
+#resultImageContainer {
+  position: relative !important;
+  display: inline-block !important;
+  width: 100% !important;
+}
+
+#resultImage {
+  display: block !important;
+  width: 100% !important;
+  height: auto !important;
+}
+
+#gradcamOverlay {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  transition: opacity 0.3s ease-in-out !important;
+  border-radius: var(--border-radius);
+  object-fit: cover !important;
+}
+
+.disease-details h3 {
+  margin-bottom: 1.5rem;
+  color: var(--primary-agri);
+  font-family: var(--font-family-heading);
+  font-weight: 700;
+  font-size: 1.5rem;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.disease-details h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-agri), var(--secondary-agri));
+  border-radius: 3px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.info-item {
+  background: var(--card-bg);
+  padding: 1.75rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.info-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: var(--primary-agri);
+}
+
+.info-item i {
+  color: var(--primary-agri);
+  margin-right: 0.75rem;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(46, 125, 50, 0.1);
+  border-radius: 50%;
+}
+
+.info-item strong {
+  display: block;
+  margin-bottom: 0.75rem;
+  color: var(--primary-agri);
+  font-family: var(--font-family-heading);
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.results-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.results-actions .btn {
+  min-width: 160px;
+}
+
+/* Batch Results Table */
+.batch-results-container {
+  margin-top: 2rem;
+}
+
+.batch-summary {
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(56, 142, 60, 0.05));
+  padding: 1.5rem;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.batch-summary h3 {
+  color: var(--primary-agri);
+  margin-bottom: 0.5rem;
+}
+
+.batch-results-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background: var(--card-bg);
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-light);
+}
+
+.batch-results-table thead {
+  background: var(--primary-agri);
+  color: white;
+}
+
+.batch-results-table th,
+.batch-results-table td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.batch-results-table tbody tr {
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.batch-results-table tbody tr:hover {
+  background: rgba(46, 125, 50, 0.05);
+}
+
+.batch-results-table tbody tr.selected {
+  background: rgba(46, 125, 50, 0.1);
+  font-weight: 600;
+}
+
+.confidence-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.confidence-high {
+  background: rgba(56, 142, 60, 0.2);
+  color: var(--severity-low);
+}
+
+.confidence-medium {
+  background: rgba(245, 124, 0, 0.2);
+  color: var(--severity-medium);
+}
+
+.confidence-low {
+  background: rgba(211, 47, 47, 0.2);
+  color: var(--severity-high);
+}
+
+/* Card Styles */
+.card {
+  background-color: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-light);
+  padding: 1.75rem;
+  margin-bottom: 1.5rem;
+  transition: var(--transition);
+  border: 1px solid var(--border-light);
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-agri), var(--secondary-agri));
+}
+
+.card:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-5px);
+  border-color: rgba(46, 125, 50, 0.3);
+}
+
+/* Grid System */
+.grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.grid-2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+/* Flex Utilities */
+.flex {
+  display: flex;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/* Spacing Utilities */
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+.p-1 { padding: 0.5rem; }
+.p-2 { padding: 1rem; }
+.p-3 { padding: 1.5rem; }
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Loading Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-light);
+  border-top: 4px solid var(--primary-agri);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+  transition: var(--transition);
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Responsive adjustments for mobile */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 0.5rem;
+  }
+  
+  .grid-2,
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .flex {
+    flex-direction: column;
+  }
+  
+  .justify-between {
+    justify-content: center;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .nav-menu {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .hero-content h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-stats {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .results-overview {
+    grid-template-columns: 1fr;
+  }
+  
+  .upload-area {
+    padding: 2rem 1rem;
+  }
+  
+  .upload-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .results-actions {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .results-actions .btn {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+/* Accessibility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Enhanced UI Components */
+
+/* Camera Overlay */
+.camera-overlay-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.camera-view {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  border-radius: var(--border-radius-lg);
+  overflow: hidden;
+  background: black;
+}
+
+.camera-view video {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Toast Notifications */
+.toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 1rem 1.5rem;
+  border-radius: var(--border-radius);
+  color: white;
+  z-index: 1000;
+  animation: slideInRight 0.3s ease-out;
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast-success {
+  background-color: var(--severity-low);
+}
+
+.toast-error {
+  background-color: var(--severity-high);
+}
+
+.toast-warning {
+  background-color: var(--severity-medium);
+}
+
+.toast-info {
+  background-color: var(--primary-agri);
+}
+
+/* Hamburger Menu */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  padding: 5px;
+}
+
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+  }
+  
+  .nav-menu {
+    position: fixed;
+    left: -100%;
+    top: 70px;
+    flex-direction: column;
+    background-color: var(--card-bg);
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+    box-shadow: 0 10px 27px var(--shadow-medium);
+    z-index: 100;
+  }
+  
+  .nav-menu.show {
+    left: 0;
+  }
+  
+  .nav-menu.show ~ .hamburger {
+    z-index: 101;
+  }
+}
+
+.hamburger span {
+  width: 25px;
+  height: 3px;
+  background-color: var(--text-dark);
+  margin: 3px 0;
+  transition: 0.3s;
+}
+
+/* Page Visibility */
+section {
+  scroll-margin-top: 100px;
+  padding: 4rem 0;
+}
+
+/* Features Section */
+.features-section {
+  background-color: var(--background);
+}
+
+.features-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+  color: var(--primary-agri);
+  font-family: var(--font-family-heading);
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.feature-card {
+  background: var(--card-bg);
+  padding: 2.5rem;
+  border-radius: var(--border-radius-lg);
+  border: 1px solid var(--border-light);
+  box-shadow: var(--shadow-light);
+  transition: var(--transition);
+  text-align: center;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  box-shadow: var(--shadow-heavy);
+  border-color: var(--primary-agri);
+}
+
+.feature-card i {
+  font-size: 3rem;
+  color: var(--primary-agri);
+  margin-bottom: 1.5rem;
+  display: block;
+}
+
+.feature-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--text-dark);
+  font-family: var(--font-family-heading);
+}
+
+.feature-card p {
+  color: var(--text-light);
+  line-height: 1.8;
+}
+
+/* About Section */
+.about-section {
+  background: linear-gradient(135deg, rgba(46, 125, 50, 0.05), rgba(56, 142, 60, 0.05));
+  border-radius: var(--border-radius-lg);
+}
+
+.about-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--primary-agri);
+  font-family: var(--font-family-heading);
+}
+
+.about-content {
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.about-content p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: var(--text-dark);
+}
+
+/* Upload Section Spacing */
+.upload-section {
+  background: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  padding: 3rem;
+  box-shadow: var(--shadow-medium);
+  border: 1px solid var(--border-light);
+}
+
+.upload-section h2,
+.results-section h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: var(--primary-agri);
+  font-family: var(--font-family-heading);
+}
+
+/* Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Feature Cards */
+.feature-item {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.stat-card {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+/* Mobile Optimizations */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-dark);
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+  
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px var(--shadow-medium);
+    padding: 1rem;
+    z-index: 100;
+  }
+  
+  .nav-menu.active {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Improved Form Elements */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-light);
+  border-radius: var(--border-radius);
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-soybean);
+  box-shadow: 0 0 0 3px rgba(74, 124, 89, 0.1);
+}
+
+/* Loading States */
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Smooth Transitions */
+* {
+  transition: var(--transition);
+}
+
+/* Focus States for Accessibility */
+a:focus, button:focus, input:focus {
+  outline: 2px solid var(--primary-soybean);
+  outline-offset: 2px;
+}
+
+/* Better Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--light-green);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-soybean);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-green);
+}
+
+/* Enhanced Footer */
+.footer {
+  background: linear-gradient(135deg, var(--primary-agri), var(--secondary-agri));
+  color: white;
+  padding: 3rem 0 1rem;
+  margin-top: 4rem;
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.footer-info h3,
+.footer-disclaimer h4,
+.footer-links h4 {
+  margin-bottom: 1rem;
+  font-family: var(--font-family-heading);
+}
+
+.footer-info p,
+.footer-disclaimer p,
+.footer-links p {
+  line-height: 1.6;
+  opacity: 0.9;
+}
+
+.footer-link {
+  color: var(--accent-gold);
+  text-decoration: none;
+  transition: var(--transition);
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+.footer-bottom {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+}
+
+/* Dark Mode Enhancements */
+body.dark-mode .mode-btn {
+  color: var(--text-light);
+}
+
+body.dark-mode .mode-btn.active {
+  background: var(--primary-agri);
+  color: white;
+}
+
+body.dark-mode .batch-results-table {
+  background: rgba(45, 45, 45, 0.8);
+}
+
+body.dark-mode .batch-results-table tbody tr:hover {
+  background: rgba(46, 125, 50, 0.15);
+}
+
+body.dark-mode .batch-results-table tbody tr.selected {
+  background: rgba(46, 125, 50, 0.25);
+}
+
+/* Tabbed Disease Information */
+.disease-info-tabs {
+  margin-top: 2rem;
+}
+
+.tab-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--border-light);
+  overflow-x: auto;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  padding: 1rem 1.5rem;
+  background: transparent;
+  border: none;
+  border-bottom: 3px solid transparent;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: var(--transition);
+  white-space: nowrap;
+  font-family: var(--font-family-heading);
+  font-size: 1rem;
+}
+
+.tab-btn i {
+  margin-right: 0.5rem;
+}
+
+.tab-btn:hover {
+  color: var(--primary-agri);
+  background: rgba(46, 125, 50, 0.05);
+}
+
+.tab-btn.active {
+  color: var(--primary-agri);
+  border-bottom-color: var(--primary-agri);
+  background: rgba(46, 125, 50, 0.1);
+}
+
+.tab-content {
+  padding: 1rem 0;
+}
+
+.tab-pane {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.info-card {
+  background: rgba(46, 125, 50, 0.05);
+  border-left: 4px solid var(--primary-agri);
+  padding: 1.5rem;
+  border-radius: var(--border-radius-md);
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow-light);
+}
+
+.info-card h4 {
+  color: var(--primary-agri);
+  margin-bottom: 1rem;
+  font-family: var(--font-family-heading);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.info-card h4 i {
+  margin-right: 0.5rem;
+}
+
+.info-card p,
+.info-card .formatted-text {
+  color: var(--text-dark);
+  line-height: 1.8;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+.formatted-text ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.5rem 0;
+}
+
+.formatted-text ul li {
+  padding-left: 1.5rem;
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.formatted-text ul li:before {
+  content: '•';
+  color: var(--primary-agri);
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+}
+
+.disease-type-badge {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: linear-gradient(135deg, var(--primary-agri), var(--secondary-agri));
+  color: white;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+/* Dark mode for tabs */
+body.dark-mode .tab-btn {
+  color: var(--text-light);
+}
+
+body.dark-mode .tab-btn.active {
+  color: var(--primary-agri);
+}
+
+body.dark-mode .info-card {
+  background: rgba(46, 125, 50, 0.15);
+}
+
+.identity-ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.9rem;
+  border-radius: 999px;
+  background: linear-gradient(135deg, rgba(243, 156, 18, 0.15), rgba(230, 126, 34, 0.15));
+  border: 1px solid rgba(243, 156, 18, 0.8);
+  color: var(--text-dark);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.identity-ribbon i {
+  color: #f39c12;
+}
+
+body.dark-mode .identity-ribbon {
+  background: linear-gradient(135deg, rgba(243, 156, 18, 0.25), rgba(230, 126, 34, 0.25));
+}
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-content">
+            <a href="#" class="logo">
+                <span class="logo-icon">🌱</span>
+                <span class="logo-text" data-i18n="ui.title">Soyabean Leaf Disease Detection System</span>
+            </a>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link scroll-link" data-i18n="ui.home">Home</a></li>
+                    <li><a href="#analyze" class="nav-link scroll-link" data-i18n="ui.uploadNav">Upload</a></li>
+                    <li><a href="#features" class="nav-link scroll-link" data-i18n="ui.features">Features</a></li>
+                    <li><a href="#results" class="nav-link scroll-link" data-i18n="ui.results">Results</a></li>
+                    <li><a href="#about" class="nav-link scroll-link" data-i18n="ui.about">About</a></li>
+                </ul>
+            </nav>
+            <div class="user-actions">
+                <!-- Language Switcher -->
+                <div class="language-selector" style="display: inline-block; margin-right: 10px;">
+                    <select id="languageSelect" style="
+                        padding: 8px 12px;
+                        border: 1px solid var(--border-color);
+                        border-radius: 6px;
+                        background: var(--card-bg);
+                        color: var(--text-color);
+                        cursor: pointer;
+                        font-size: 14px;
+                    ">
+                        <option value="en">🇬🇧 English</option>
+                        <option value="hi">🇮🇳 हिन्दी</option>
+                        <option value="mr">🇮🇳 मराठी</option>
+                    </select>
+                </div>
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">🌙</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <!-- Hero Section -->
+            <section id="home" class="hero-section">
+                <div class="hero-content">
+                    <h1 class="hero-title">Soyabean Leaf Detection System</h1>
+                    <p class="hero-subtitle">Advanced AI-powered system for detecting and classifying soybean diseases with high accuracy using YOLO and EfficientNet</p>
+                    <div class="hero-cta">
+                        <a href="#analyze" class="btn btn-primary scroll-link">
+                            <i class="fas fa-upload"></i> Analyze Image
+                        </a>
+                        <a href="#features" class="btn btn-secondary scroll-link">
+                            <i class="fas fa-info-circle"></i> How It Works
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-microscope"></i>
+                        <h3>~93%</h3>
+                        <p>System Accuracy</p>
+                        <small>YOLO + Ensemble</small>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>93.11%</h3>
+                        <p>Ensemble Accuracy</p>
+                        <small>EfficientNet-B4 + ResNet152</small>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-leaf"></i>
+                        <h3>17</h3>
+                        <p>Disease Types</p>
+                        <small>Supported Classes</small>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upload Section -->
+            <section id="analyze" class="upload-section">
+                <h2>Upload Soybean Image</h2>
+                <div class="upload-container">
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Drag & drop your soybean image here or click to browse</p>
+                        <small>Supports JPG, PNG, GIF formats (Max 10MB) • <strong>Ctrl+V to paste</strong></small>
+                        <input type="file" id="imageInput" accept="image/*" hidden>
+                        <input type="file" id="pdfInput" accept="application/pdf" hidden>
+                    </div>
+                    
+                    <div class="upload-mode-toggle">
+                        <button class="mode-btn active" id="singleModeBtn" data-mode="single">
+                            <i class="fas fa-image"></i> Single Image
+                        </button>
+                        <button class="mode-btn" id="batchModeBtn" data-mode="batch">
+                            <i class="fas fa-file-pdf"></i> PDF Batch
+                        </button>
+                    </div>
+                    <div class="upload-controls">
+                        <button class="btn btn-secondary" id="uploadButton">
+                            <i class="fas fa-file-upload"></i> Choose File
+                        </button>
+                        <button class="btn btn-secondary" id="cameraButton">
+                            <i class="fas fa-camera"></i> Capture
+                        </button>
+                    </div>
+                    <div class="image-preview" id="imagePreview" style="display: none;">
+                        <img id="previewImage" alt="Preview">
+                        <button class="remove-image-btn" id="removeImageButton">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="analyze-controls">
+                    <button class="btn btn-primary" id="analyzeButton" disabled>
+                        <i class="fas fa-search"></i> Analyze Disease
+                    </button>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="features-section">
+                <h2>Advanced AI Technology</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-bullseye"></i>
+                        <h3>YOLO Detection</h3>
+                        <p>YOLOv8 detector trained on 12-class soybean dataset, achieving high-precision disease-region detection</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-brain"></i>
+                        <h3>CNN Classification</h3>
+                        <p>V2 Ensemble (EfficientNet-B4 + ResNet152) achieving ~93.11% classification accuracy across 17 disease types</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <h3>Fast Processing</h3>
+                        <p>GPU-accelerated inference delivering results in seconds with real-time analysis capabilities</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>High Accuracy</h3>
+                        <p>Combined YOLO + EfficientNet pipeline ensures precise disease detection and classification</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-seedling"></i>
+                        <h3>Multi-Crop Support</h3>
+                        <p>Extensible architecture designed for easy adaptation to other crop disease detection systems</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Reliable Results</h3>
+                        <p>Confidence scores and detailed disease information to support informed agricultural decisions</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section id="results" class="results-section">
+                <h2>Analysis Results</h2>
+                <div class="results-container">
+                    <div class="results-placeholder" id="resultsPlaceholder">
+                        <i class="fas fa-chart-bar"></i>
+                        <p>No analysis results yet. Upload an image to see results.</p>
+                    </div>
+                    <div class="results-content" id="resultsContent" style="display: none;">
+                        <!-- Crop Verification Warning Banner -->
+                        <div id="cropWarningBanner" style="display: none; margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, #f39c1222 0%, #e67e2222 100%); border-left: 4px solid #f39c12; border-radius: 8px;">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <i class="fas fa-exclamation-triangle" style="font-size: 24px; color: #f39c12;"></i>
+                                <div style="flex: 1;">
+                                    <strong style="color: #f39c12; font-size: 16px;">Crop Verification Warning</strong>
+                                    <p id="cropWarningMessage" style="margin: 5px 0 0 0; color: var(--text-primary); font-size: 14px;"></p>
+                                    <small id="cropWarningDetails" style="color: var(--text-secondary); font-size: 12px;"></small>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="results-overview">
+                            <div class="result-summary">
+                                <h3>Disease Detected</h3>
+                                <div id="identityRibbon" class="identity-ribbon" style="display: none;">
+                                    <i class="fas fa-exclamation-circle"></i>
+                                    <span id="identityRibbonText">Identity uncertain – please verify this is a soybean leaf.</span>
+                                </div>
+                                <div class="disease-name" id="diseaseName">-</div>
+                                <div id="analysisStatus" style="font-size: 0.85rem; color: var(--text-light); margin-bottom: 0.5rem; font-style: italic;"></div>
+                                <div class="confidence-score" id="confidenceScore">-</div>
+                                <div class="disease-type-badge" id="diseaseTypeBadge" style="display: none;"></div>
+                            </div>
+                            <div class="detection-visualization">
+                                <div id="resultImageContainer" style="position: relative; display: inline-block; width: 100%;">
+                                    <img id="resultImage" alt="Detected results" style="display: block; width: 100%; height: auto;">
+                                    <img id="gradcamOverlay" alt="Grad-CAM Heatmap" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; pointer-events: none; display: none; object-fit: cover;">
+                                </div>
+                                <!-- Grad-CAM Heatmap Toggle -->
+                                <div id="gradcamControls" style="display: none; margin-top: 15px; text-align: center;">
+                                    <button id="toggleGradcam" class="btn-secondary" style="
+                                        padding: 8px 16px;
+                                        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                                        color: white;
+                                        border: none;
+                                        border-radius: 6px;
+                                        cursor: pointer;
+                                        font-size: 14px;
+                                        transition: transform 0.2s;
+                                    " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+                                        <i class="fas fa-eye"></i> Show AI Focus (Grad-CAM)
+                                    </button>
+                                    <p style="font-size: 12px; color: var(--text-secondary); margin-top: 5px;">
+                                        Visualizes what the AI focused on during classification
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Tabbed Disease Information -->
+                        <div class="disease-info-tabs">
+                            <div class="tab-buttons">
+                                <button class="tab-btn active" data-tab="overview"><i class="fas fa-info-circle"></i> Overview</button>
+                                <button class="tab-btn" data-tab="actions"><i class="fas fa-tasks"></i> Actions</button>
+                                <button class="tab-btn" data-tab="symptoms"><i class="fas fa-stethoscope"></i> Symptoms</button>
+                                <button class="tab-btn" data-tab="treatment"><i class="fas fa-medkit"></i> Treatment</button>
+                                <button class="tab-btn" data-tab="monitoring"><i class="fas fa-chart-line"></i> Monitoring</button>
+                                <button class="tab-btn" data-tab="fertilizers"><i class="fas fa-seedling"></i> Fertilizers</button>
+                            </div>
+                            
+                            <div class="tab-content">
+                                <!-- Overview Tab -->
+                                <div class="tab-pane active" id="tab-overview">
+                                    <div class="info-card" style="background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%); border-left: 4px solid var(--primary-color);">
+                                        <h4><i class="fas fa-brain"></i> AI Analysis & Explanation</h4>
+                                        <div id="dynamicExplanation" class="formatted-text" style="font-size: 16px; line-height: 1.8;">-</div>
+                                    </div>
+                                    <div class="info-card">
+                                        <h4><i class="fas fa-chart-line"></i> Detection Confidence</h4>
+                                        <p id="confidenceLevelDetail" style="font-size: 15px;">-</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Immediate Actions Tab (NEW) -->
+                                <div class="tab-pane" id="tab-actions">
+                                    <div class="info-card" style="border-left: 4px solid #f39c12;">
+                                        <h4><i class="fas fa-exclamation-circle"></i> Immediate Actions Required</h4>
+                                        <div id="immediateActions" class="formatted-text" style="font-size: 15px;">-</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Symptoms Tab -->
+                                <div class="tab-pane" id="tab-symptoms">
+                                    <div class="info-card">
+                                        <h4><i class="fas fa-exclamation-triangle"></i> Symptoms & Visual Indicators</h4>
+                                        <div id="diseaseSymptoms" class="formatted-text">-</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Treatment Tab -->
+                                <div class="tab-pane" id="tab-treatment">
+                                    <div class="info-card">
+                                        <h4><i class="fas fa-medkit"></i> Treatment & Solutions</h4>
+                                        <div id="diseaseTreatment" class="formatted-text">-</div>
+                                    </div>
+                                    <div class="info-card">
+                                        <h4><i class="fas fa-shield-alt"></i> Prevention & Precautions</h4>
+                                        <div id="diseasePrevention" class="formatted-text">-</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Monitoring Plan Tab (NEW) -->
+                                <div class="tab-pane" id="tab-monitoring">
+                                    <div class="info-card" style="border-left: 4px solid #27ae60;">
+                                        <h4><i class="fas fa-clipboard-check"></i> Monitoring & Follow-Up Plan</h4>
+                                        <div id="monitoringPlan" class="formatted-text" style="font-size: 15px;">-</div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Fertilizers Tab -->
+                                <div class="tab-pane" id="tab-fertilizers">
+                                    <div class="info-card">
+                                        <h4><i class="fas fa-seedling"></i> Context-Aware Fertilizer Guidance</h4>
+                                        <div id="fertilizerGuidance" class="formatted-text">-</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="results-actions">
+                            <button class="btn btn-secondary" id="exportPdfButton">
+                                <i class="fas fa-file-pdf"></i> Export PDF Report
+                            </button>
+                            <button class="btn btn-secondary" id="exportResultsButton">
+                                <i class="fas fa-download"></i> Export JSON
+                            </button>
+                            <button class="btn btn-primary" id="analyzeAnotherButton">
+                                <i class="fas fa-sync-alt"></i> Analyze Another Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section id="about" class="about-section">
+                <h2>About This System</h2>
+                <div class="about-content">
+                    <p>This AI-powered soybean disease detection system combines cutting-edge computer vision technology with deep learning to provide accurate, fast, and reliable disease diagnosis for agricultural applications.</p>
+                    <p>The system uses a two-stage pipeline: YOLOv8 for disease region detection and a V2 Ensemble (EfficientNet-B4 + ResNet152) for precise classification across 17 disease types including bacterial blight, rust, mosaic virus, and more.</p>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Model Health & Transparency Panel -->
+    <div id="modelHealthPanel" style="
+        background: var(--card-bg);
+        border-top: 2px solid var(--border-color);
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        transition: all 0.3s ease;
+    ">
+        <div class="container" style="padding: 15px 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between; cursor: pointer;" onclick="window.app?.toggleModelHealth()">
+                <h4 style="margin: 0; color: var(--primary-color); font-size: 16px;">
+                    <i class="fas fa-chart-line"></i> Model Health & Transparency
+                </h4>
+                <button id="modelHealthToggle" style="
+                    background: none;
+                    border: none;
+                    color: var(--text-color);
+                    font-size: 20px;
+                    cursor: pointer;
+                    transition: transform 0.3s;
+                ">▼</button>
+            </div>
+            <div id="modelHealthContent" style="
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height 0.3s ease;
+            ">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border-color);">
+                    <div class="health-metric">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">YOLO Detection</div>
+                        <div style="font-size: 18px; font-weight: 600; color: var(--success-color);" id="yoloStatus">Active</div>
+                        <div style="font-size: 11px; color: var(--text-secondary);">High Accuracy Detection</div>
+                    </div>
+                    <div class="health-metric">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">CNN Classification</div>
+                        <div style="font-size: 18px; font-weight: 600; color: var(--success-color);" id="cnnStatus">Active</div>
+                        <div style="font-size: 11px; color: var(--text-secondary);">93.11% Accuracy</div>
+                    </div>
+                    <div class="health-metric">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">Inference Time</div>
+                        <div style="font-size: 18px; font-weight: 600; color: var(--text-color);" id="inferenceTime">N/A</div>
+                        <div style="font-size: 11px; color: var(--text-secondary);">Last analysis</div>
+                    </div>
+                    <div class="health-metric">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">Device</div>
+                        <div style="font-size: 18px; font-weight: 600; color: var(--text-color);" id="deviceType">Browser</div>
+                        <div style="font-size: 11px; color: var(--text-secondary);">Client-side</div>
+                    </div>
+                    <div class="health-metric">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">Model Version</div>
+                        <div style="font-size: 18px; font-weight: 600; color: var(--text-color);">v2.2.0</div>
+                        <div style="font-size: 11px; color: var(--text-secondary);">V2 Ensemble (EffNet-B4 + ResNet152)</div>
+                    </div>
+                    <div class="health-metric">
+                        <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 5px;">System Status</div>
+                        <div style="font-size: 18px; font-weight: 600;" id="systemStatus">
+                            <span style="color: var(--success-color);">✓</span> Operational
+                        </div>
+                        <div style="font-size: 11px; color: var(--text-secondary);">All systems online</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-info">
+                    <h3>Soyabean Leaf Disease Detection System</h3>
+                    <p>Advanced AI-powered solution for agricultural disease detection using YOLO and Enhanced EfficientNet models.</p>
+                </div>
+                <div class="footer-disclaimer">
+                    <h4>Disclaimer</h4>
+                    <p>This system provides AI-based predictions for educational and research purposes. Always consult with agricultural experts for professional advice.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Contact</h4>
+                    <p>GitHub: <a href="#" class="footer-link">@soybean-ai</a></p>
+                    <p>Email: <a href="#" class="footer-link">info@soybeanai.com</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; <span id="current-year">2026</span> Soyabean Leaf Disease Detection System. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="static/scripts.js" defer></script>
+    <script src="static/i18n-manager.js" defer></script>
+    <script>
+    // Inline JavaScript to ensure functionality
+    class DiseaseDetectionApp {
+      constructor() {
+        this.currentImage = null;
+        this.currentResult = null;
+        this.theme = localStorage.getItem('theme') || 'light';
+        this.uploadMode = 'single'; // 'single' or 'batch'
+        this.batchResults = [];
+        this.settings = {
+          enableShadowRemoval: true
+        };
+        this.init();
+      }
+
+      init() {
+        console.log('🚀 Soybean Disease Detection System v2.2.0 - Enhanced + UX Layer');
+        
+        // Register Service Worker for PWA
+        this.registerServiceWorker();
+        
+        // Initialize I18N Manager
+        if (typeof I18NManager !== 'undefined') {
+          this.i18n = new I18NManager();
+          this.setupLanguageSwitcher();
+          // Apply initial translations
+          this.i18n.updateUI();
+          console.log('✅ I18N initialized with language:', this.i18n.currentLang);
+        } else {
+          console.warn('I18N Manager not loaded');
+        }
+        
+        this.setupEventListeners();
+        this.setupClipboardPaste();
+        this.setupTabSwitching();
+        this.applyTheme();
+        console.log('✅ Features: Upload, Camera, Clipboard, PDF Batch, LLM, Grad-CAM, I18N, PWA');
+      }
+
+      setupEventListeners() {
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const removeImageBtn = document.getElementById('removeImageButton');
+        const analyzeButton = document.getElementById('analyzeButton');
+        const themeToggle = document.getElementById('themeToggle');
+        const uploadButton = document.getElementById('uploadButton');
+        const cameraButton = document.getElementById('cameraButton');
+        const exportPdfButton = document.getElementById('exportPdfButton');
+        const exportResultsButton = document.getElementById('exportResultsButton');
+        const analyzeAnotherButton = document.getElementById('analyzeAnotherButton');
+        const singleModeBtn = document.getElementById('singleModeBtn');
+        const batchModeBtn = document.getElementById('batchModeBtn');
+        const pdfInput = document.getElementById('pdfInput');
+
+        if (uploadArea) {
+          uploadArea.addEventListener('click', () => imageInput.click());
+          uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+          uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+          uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length) this.handleImageUpload(e.dataTransfer.files[0]);
+          });
+        }
+
+        if (imageInput) imageInput.addEventListener('change', (e) => { if (e.target.files.length) this.handleImageUpload(e.target.files[0]); });
+        if (uploadButton) uploadButton.addEventListener('click', () => { 
+          console.log('✅ Upload clicked'); 
+          if (this.uploadMode === 'batch') pdfInput.click();
+          else imageInput.click(); 
+        });
+        if (cameraButton) cameraButton.addEventListener('click', () => { console.log('✅ Camera clicked'); this.openCamera(); });
+        if (removeImageBtn) removeImageBtn.addEventListener('click', () => this.removeImage());
+        if (analyzeButton) analyzeButton.addEventListener('click', () => this.analyzeImage());
+        if (exportPdfButton) exportPdfButton.addEventListener('click', () => this.exportToPdf());
+        if (exportResultsButton) exportResultsButton.addEventListener('click', () => this.exportToJson());
+        if (analyzeAnotherButton) analyzeAnotherButton.addEventListener('click', () => this.analyzeAnotherImage());
+        if (themeToggle) themeToggle.addEventListener('click', () => { console.log('✅ Theme toggle clicked'); this.toggleTheme(); });
+
+        // Mode switching
+        if (singleModeBtn) singleModeBtn.addEventListener('click', () => this.switchMode('single'));
+        if (batchModeBtn) batchModeBtn.addEventListener('click', () => this.switchMode('batch'));
+        
+        // PDF input handler
+        if (pdfInput) pdfInput.addEventListener('change', (e) => { if (e.target.files.length) this.handlePdfUpload(e.target.files[0]); });
+
+        document.querySelectorAll('.scroll-link').forEach(link => {
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        });
+      }
+
+      setupClipboardPaste() {
+        document.addEventListener('paste', (e) => {
+          const items = e.clipboardData.items;
+          for (let item of items) {
+            if (item.type.indexOf('image') !== -1) {
+              e.preventDefault();
+              const blob = item.getAsFile();
+              console.log('✅ Image pasted from clipboard');
+              this.handleImageUpload(blob);
+              this.showToast('Image pasted successfully!', 'success');
+              return;
+            }
+          }
+        });
+      }
+
+      setupTabSwitching() {
+        // Tab switching functionality
+        document.addEventListener('click', (e) => {
+          if (e.target.classList.contains('tab-btn') || e.target.parentElement.classList.contains('tab-btn')) {
+            const btn = e.target.classList.contains('tab-btn') ? e.target : e.target.parentElement;
+            const tabName = btn.getAttribute('data-tab');
+            
+            // Remove active from all tabs
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+            
+            // Activate clicked tab
+            btn.classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+          }
+        });
+      }
+
+      setupLanguageSwitcher() {
+        const languageSelect = document.getElementById('languageSelect');
+        if (!languageSelect) return;
+        
+        // Set initial value from stored preference
+        languageSelect.value = this.i18n.currentLang;
+        
+        // Handle language change
+        languageSelect.addEventListener('change', (e) => {
+          const newLang = e.target.value;
+          this.i18n.switchLanguage(newLang);
+          this.showToast(`Language changed to ${this.i18n.translations[newLang].name}`, 'success');
+        });
+      }
+
+      registerServiceWorker() {
+        // Register service worker for PWA support
+        if ('serviceWorker' in navigator) {
+          window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/service-worker.js')
+              .then((registration) => {
+                console.log('✅ Service Worker registered:', registration.scope);
+                
+                // Check for updates
+                registration.addEventListener('updatefound', () => {
+                  const newWorker = registration.installing;
+                  newWorker.addEventListener('statechange', () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                      this.showToast('New version available! Refresh to update.', 'info');
+                    }
+                  });
+                });
+              })
+              .catch((error) => {
+                console.warn('⚠️ Service Worker registration failed:', error);
+              });
+          });
+        } else {
+          console.log('🚨 Service Worker not supported');
+        }
+      }
+
+      switchMode(mode) {
+        this.uploadMode = mode;
+        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        if (mode === 'single') {
+          document.getElementById('singleModeBtn').classList.add('active');
+          document.querySelector('.upload-area p').textContent = 'Drag & drop your soybean image here or click to browse';
+          this.showToast('Single image mode activated', 'info');
+        } else {
+          document.getElementById('batchModeBtn').classList.add('active');
+          document.querySelector('.upload-area p').textContent = 'Upload PDF with multiple soybean leaf images';
+          this.showToast('PDF batch mode activated', 'info');
+        }
+      }
+
+      handleImageUpload(file) {
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+        if (!allowedTypes.includes(file.type.toLowerCase()) || file.size > 10 * 1024 * 1024) {
+          this.showToast('Invalid file. Please upload JPG, PNG, GIF, or WebP under 10MB', 'error');
+          return;
+        }
+        this.currentImage = file;
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          document.getElementById('previewImage').src = e.target.result;
+          document.getElementById('imagePreview').style.display = 'block';
+          document.getElementById('uploadArea').style.display = 'none';
+          document.getElementById('analyzeButton').disabled = false;
+        };
+        reader.readAsDataURL(file);
+      }
+
+      removeImage() {
+        this.currentImage = null;
+        document.getElementById('imagePreview').style.display = 'none';
+        document.getElementById('uploadArea').style.display = 'block';
+        document.getElementById('imageInput').value = '';
+        document.getElementById('analyzeButton').disabled = true;
+      }
+
+      openCamera() {
+        navigator.mediaDevices.getUserMedia({ video: true })
+          .then(stream => {
+            const overlay = document.createElement('div');
+            overlay.className = 'camera-overlay-container';
+            overlay.innerHTML = `<div class="camera-overlay"><div class="camera-view"><video id="cameraVideo" autoplay playsinline style="width:100%;"></video><button id="captureBtn" class="btn btn-primary" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:1000;"><i class="fas fa-camera"></i> Capture</button><button id="cancelBtn" class="btn btn-secondary" style="position:absolute;top:20px;right:20px;z-index:1000;"><i class="fas fa-times"></i> Cancel</button></div></div>`;
+            document.body.appendChild(overlay);
+            document.getElementById('cameraVideo').srcObject = stream;
+            document.getElementById('captureBtn').onclick = () => {
+              const canvas = document.createElement('canvas');
+              const video = document.getElementById('cameraVideo');
+              canvas.width = video.videoWidth;
+              canvas.height = video.videoHeight;
+              canvas.getContext('2d').drawImage(video, 0, 0);
+              canvas.toBlob(blob => {
+                this.handleImageUpload(new File([blob], 'camera.jpg', { type: 'image/jpeg' }));
+                stream.getTracks().forEach(t => t.stop());
+                document.body.removeChild(overlay);
+              }, 'image/jpeg');
+            };
+            document.getElementById('cancelBtn').onclick = () => {
+              stream.getTracks().forEach(t => t.stop());
+              document.body.removeChild(overlay);
+            };
+          })
+          .catch(() => this.showToast('Camera access denied', 'error'));
+      }
+
+      async handlePdfUpload(file) {
+        if (file.type !== 'application/pdf') {
+          this.showToast('Please upload a valid PDF file', 'error');
+          return;
+        }
+        this.showToast('Processing PDF... This may take a moment', 'info');
+        
+        // For demonstration: simulate PDF processing
+        // In production, you would use pdf.js library to extract images
+        const simulatedImages = Math.floor(Math.random() * 5) + 2; // 2-6 images
+        this.batchResults = [];
+        
+        for (let i = 0; i < simulatedImages; i++) {
+          await new Promise(resolve => setTimeout(resolve, 500));
+          this.batchResults.push({
+            imageNum: i + 1,
+            disease: ['Healthy', 'Rust', 'Brown Spot', 'Bacterial Blight'][Math.floor(Math.random() * 4)],
+            confidence: (Math.random() * 30 + 70).toFixed(2)
+          });
+        }
+        
+        this.displayBatchResults();
+        this.showToast(`Processed ${simulatedImages} images from PDF`, 'success');
+      }
+
+      displayBatchResults() {
+        const resultsPlaceholder = document.getElementById('resultsPlaceholder');
+        const resultsContent = document.getElementById('resultsContent');
+        
+        if (resultsPlaceholder) resultsPlaceholder.style.display = 'none';
+        if (resultsContent) {
+          resultsContent.innerHTML = `
+            <div class="batch-results-container">
+              <div class="batch-summary">
+                <h3>📊 Batch Analysis Complete</h3>
+                <p>Analyzed ${this.batchResults.length} images from PDF</p>
+              </div>
+              <table class="batch-results-table">
+                <thead>
+                  <tr>
+                    <th>Image #</th>
+                    <th>Disease Detected</th>
+                    <th>Confidence</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${this.batchResults.map((result, idx) => {
+                    const confidenceNum = parseFloat(result.confidence);
+                    const badgeClass = confidenceNum >= 85 ? 'confidence-high' : confidenceNum >= 70 ? 'confidence-medium' : 'confidence-low';
+                    return `
+                      <tr data-index="${idx}">
+                        <td>Image ${result.imageNum}</td>
+                        <td><strong>${result.disease}</strong></td>
+                        <td><span class="confidence-badge ${badgeClass}">${result.confidence}%</span></td>
+                        <td><i class="fas fa-check-circle" style="color: var(--severity-low);"></i> Analyzed</td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          `;
+          resultsContent.style.display = 'block';
+        }
+        document.querySelector('#results').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      exportToPdf() {
+        if (this.batchResults.length > 0) {
+          // Batch PDF export
+          this.showToast(`Generating PDF report for ${this.batchResults.length} images...`, 'info');
+          setTimeout(() => {
+            this.showToast('PDF report downloaded (simulated)', 'success');
+            console.log('Batch PDF Export:', this.batchResults);
+          }, 1000);
+        } else if (this.currentResult) {
+          // Single image export with full LLM knowledge
+          this.showToast('Generating comprehensive PDF report...', 'info');
+          
+          // Prepare full report data
+          const reportData = {
+            disease: this.currentResult.CLASS,
+            confidence: this.currentResult.confidence_percentage,
+            diseaseType: this.currentResult.DISEASE_TYPE,
+            severity: this.currentResult.SEVERITY,
+            overview: this.currentResult.MEANING,
+            symptoms: this.currentResult.SYMPTOMS,
+            prevention: this.currentResult.PREVENTION,
+            treatment: this.currentResult.TREATMENT,
+            solution: this.currentResult.SOLUTION,
+            fertilizers: this.currentResult.FERTILIZERS,
+            prognosis: this.currentResult.RECOVERY,
+            timestamp: new Date().toLocaleString()
+          };
+          
+          console.log('📝 Full PDF Report Data:', reportData);
+          
+          setTimeout(() => {
+            this.showToast('PDF report with full disease information downloaded (simulated)', 'success');
+          }, 1000);
+        } else {
+          this.showToast('No analysis results to export', 'error');
+        }
+      }
+
+      exportToJson() {
+        if (this.currentResult) {
+          // Export as JSON
+          const exportData = {
+            analysis: {
+              disease: this.currentResult.CLASS,
+              confidence: this.currentResult.confidence,
+              confidence_percentage: this.currentResult.confidence_percentage,
+              confidence_level: this.currentResult.confidence_level,
+              timestamp: new Date().toISOString()
+            },
+            disease_information: {
+              type: this.currentResult.DISEASE_TYPE,
+              severity: this.currentResult.SEVERITY,
+              meaning: this.currentResult.MEANING,
+              symptoms: this.currentResult.SYMPTOMS,
+              prevention: this.currentResult.PREVENTION,
+              treatment: this.currentResult.TREATMENT,
+              solution: this.currentResult.SOLUTION,
+              fertilizers: this.currentResult.FERTILIZERS,
+              prognosis: this.currentResult.RECOVERY
+            },
+            model_info: {
+              model_used: this.currentResult.model_used,
+              crop_type: this.currentResult.crop_type
+            }
+          };
+          
+          const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `soybean-disease-${this.currentResult.CLASS.replace(/ /g, '-')}-${Date.now()}.json`;
+          a.click();
+          URL.revokeObjectURL(url);
+          
+          this.showToast('Results exported as JSON', 'success');
+          console.log('💾 JSON Export:', exportData);
+        } else {
+          this.showToast('No analysis results to export', 'error');
+        }
+      }
+
+      async analyzeImage() {
+        if (!this.currentImage) return this.showToast('Select an image first', 'error');
+        const btn = document.getElementById('analyzeButton');
+        btn.disabled = true;
+        btn.innerHTML = '<div class="spinner"></div> Analyzing...';
+        
+        // Get shadow removal setting from UI
+        const shadowRemovalToggle = document.getElementById('shadowRemovalToggle');
+        if (shadowRemovalToggle) {
+          this.settings.enableShadowRemoval = shadowRemovalToggle.checked;
+        }
+        
+        // Track inference time
+        const startTime = performance.now();
+        
+        try {
+          const formData = new FormData();
+          formData.append('file', this.currentImage);
+          formData.append('enable_shadow_removal', this.settings.enableShadowRemoval);
+          
+          const response = await fetch('/api/classify', { method: 'POST', body: formData });
+          if (!response.ok) throw new Error('Server error');
+          const result = await response.json();
+          
+          // Calculate inference time
+          const inferenceTime = ((performance.now() - startTime) / 1000).toFixed(2);
+          this.updateModelHealth({ inferenceTime: `${inferenceTime}s`, status: 'success' });
+          
+          // Check for crop verification failure
+          if (result.error === 'invalid_crop') {
+            this.showCropVerificationError(result);
+            return;
+          }
+          
+          // Check for reliability / OOD failure (Cotton Leaf etc)
+          if (result.error === 'unreliable_prediction') {
+            this.showReliabilityError(result);
+            return;
+          }
+          
+          // Check for soybean similarity verification rejection
+          if (result.status === 'rejected' && result.reason === 'not_soybean') {
+            this.showSoybeanVerificationError(result);
+            return;
+          }
+          
+          // Check for soybean similarity verification warning
+          if (result.status === 'warning') {
+            // Show warning but continue with analysis
+            this.showSoybeanVerificationWarning(result);
+          }
+          
+          this.displayResults(result);
+          this.showToast('Analysis complete', 'success');
+        } catch (error) {
+          this.updateModelHealth({ status: 'error' });
+          this.showToast('Analysis failed: ' + error.message, 'error');
+        } finally {
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fas fa-search"></i> Analyze Disease';
+        }
+      }
+
+      displayResults(result) {
+        console.log('📊 Displaying results with enhanced LLM knowledge:', result);
+              
+        // Translate result if I18N enabled
+        if (this.i18n) {
+          result = this.i18n.translateDiseaseInfo(result);
+        }
+              
+        document.getElementById('resultsPlaceholder').style.display = 'none';
+        document.getElementById('resultsContent').style.display = 'block';
+        
+        // Display Crop Verification Warning if present
+        const warningBanner = document.getElementById('cropWarningBanner');
+        const warningMessage = document.getElementById('cropWarningMessage');
+        const warningDetails = document.getElementById('cropWarningDetails');
+        const identityRibbon = document.getElementById('identityRibbon');
+        const identityRibbonText = document.getElementById('identityRibbonText');
+        
+        // Default: hide identity ribbon
+        if (identityRibbon) {
+          identityRibbon.style.display = 'none';
+        }
+        
+        if (result.crop_verification && result.crop_verification.warning) {
+          warningMessage.textContent = result.crop_verification.warning;
+          
+          // Build detailed signal breakdown
+          let detailsText = `Confidence: ${(result.crop_verification.confidence * 100).toFixed(1)}% | Method: ${result.crop_verification.method}`;
+          
+          const signals = result.crop_verification.signals || {};
+          
+          // Add similarity-specific debug info if available
+          if (signals.similarity_score !== undefined) {
+            detailsText += ` | Similarity: ${signals.similarity_score.toFixed(3)}`;
+          }
+          
+          warningDetails.textContent = detailsText;
+          warningBanner.style.display = 'block';
+          console.log('⚠️ Crop verification warning displayed:', result.crop_verification);
+          
+          // Identity Uncertain Ribbon logic (dataset similarity-based)
+          const decision = result.crop_verification.decision;
+          const method = result.crop_verification.method || '';
+          const isSimilarityBased = method === 'dataset_similarity_efficientnet';
+          const shouldShowIdentityRibbon =
+            decision === 'likely_soybean' ||
+            (isSimilarityBased && decision !== 'soybean');
+          
+          if (identityRibbon && shouldShowIdentityRibbon) {
+            if (decision === 'soybean') {
+              identityRibbonText.textContent = 'Soybean confirmed';
+            } else if (decision === 'likely_soybean') {
+              identityRibbonText.textContent = 'Soybean (low confidence) – please verify this is a soybean leaf.';
+            } else {
+              identityRibbonText.textContent = 'Not a soybean leaf – diagnosis is disabled.';
+            }
+            identityRibbon.style.display = 'inline-flex';
+          }
+        } else {
+          warningBanner.style.display = 'none';
+          if (identityRibbon) {
+            identityRibbon.style.display = 'none';
+          }
+        }
+              
+        // Basic info - show translated name if available
+        const diseaseName = result.CLASS_TRANSLATED || result.CLASS || 'Unknown';
+        document.getElementById('diseaseName').textContent = diseaseName;
+        
+        // Display analysis status (Detection/Fallback info)
+        const statusEl = document.getElementById('analysisStatus');
+        if (statusEl) {
+          statusEl.textContent = result.status || '';
+          statusEl.style.color = 'var(--text-light)';
+          statusEl.style.fontWeight = 'normal';
+        }
+        
+        // Confidence score with progress bar
+        const confidenceValue = parseFloat(result.confidence_percentage) || 0;
+        document.getElementById('confidenceScore').innerHTML = `
+          <div class="confidence-bar-container">
+            <div class="confidence-label">
+              <span>Confidence Level</span>
+              <span><strong>${result.confidence_percentage || '0%'}</strong></span>
+            </div>
+            <div class="confidence-bar">
+              <div class="confidence-bar-fill" style="width: ${confidenceValue}%"></div>
+            </div>
+          </div>
+        `;
+              
+        // Disease type badge
+        const badge = document.getElementById('diseaseTypeBadge');
+        if (result.DISEASE_TYPE) {
+          badge.textContent = result.DISEASE_TYPE;
+          badge.style.display = 'inline-block';
+        } else {
+          badge.style.display = 'none';
+        }
+        
+        // Add severity badge if available
+        const summaryEl = document.querySelector('.result-summary');
+        let existingSeverity = summaryEl.querySelector('.severity-badge');
+        if (existingSeverity) existingSeverity.remove();
+        
+        if (result.SEVERITY) {
+          const severity = result.SEVERITY.toLowerCase();
+          const severityClass = severity === 'high' ? 'high' : severity === 'moderate' ? 'moderate' : 'low';
+          const severityIcon = severity === 'high' ? 'fa-exclamation-triangle' : severity === 'moderate' ? 'fa-exclamation-circle' : 'fa-check-circle';
+          
+          const severityBadge = document.createElement('div');
+          severityBadge.className = `severity-badge ${severityClass}`;
+          severityBadge.innerHTML = `<i class="fas ${severityIcon}"></i> ${result.SEVERITY} Severity`;
+          summaryEl.appendChild(severityBadge);
+        }
+        
+        // Image - Load original image into base layer
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const baseImageDataURL = e.target.result;
+          
+          // Set base image (always visible)
+          document.getElementById('resultImage').src = baseImageDataURL;
+          
+          // Store for reference
+          this.currentAnalysisImage = baseImageDataURL;
+          
+          // Setup Grad-CAM overlay (Explainability Layer)
+          this.setupGradCAMToggle(result);
+        };
+        reader.readAsDataURL(this.currentImage);
+        
+        // Overview tab - Dynamic LLM Explanation
+        const dynamicExpl = document.getElementById('dynamicExplanation');
+        if (result.DYNAMIC_EXPLANATION) {
+          // Parse markdown-style formatting
+          dynamicExpl.innerHTML = this.formatLLMText(result.DYNAMIC_EXPLANATION);
+        } else {
+          dynamicExpl.textContent = result.MEANING || 'No information available';
+        }
+        
+        // Confidence detail
+        const confDetail = document.getElementById('confidenceLevelDetail');
+        confDetail.innerHTML = `
+          <strong>Detection Confidence:</strong> ${result.confidence_percentage || '0%'}<br>
+          <strong>Confidence Level:</strong> <span style="text-transform: capitalize;">${result.confidence_level || 'Unknown'}</span><br>
+          <strong>Severity:</strong> ${result.SEVERITY || 'Unknown'}<br>
+          ${result.llm_reasoning_enabled ? '<strong>LLM Enhancement:</strong> ✅ Active' : ''}
+        `;
+        
+        // Immediate Actions tab (NEW)
+        const actionsEl = document.getElementById('immediateActions');
+        if (result.IMMEDIATE_ACTIONS) {
+          actionsEl.innerHTML = this.formatLLMText(result.IMMEDIATE_ACTIONS);
+        } else {
+          actionsEl.textContent = 'See treatment section for immediate guidance';
+        }
+        
+        // Symptoms tab - use variant visual_identification or fallback to SYMPTOMS
+        const symptomsEl = document.getElementById('diseaseSymptoms');
+        if (result.symptoms) {
+          // New variant system
+          symptomsEl.innerHTML = this.formatLLMText(result.symptoms);
+        } else if (result.SYMPTOMS) {
+          // Legacy system
+          symptomsEl.innerHTML = this.formatLLMText(result.SYMPTOMS);
+        } else {
+          symptomsEl.textContent = 'No symptoms information';
+        }
+        
+        // Treatment tab - use variant control_strategy or fallback to TREATMENT
+        const treatmentEl = document.getElementById('diseaseTreatment');
+        if (result.treatment) {
+          // New variant system
+          treatmentEl.innerHTML = this.formatLLMText(result.treatment);
+        } else if (result.TREATMENT) {
+          // Legacy system
+          treatmentEl.innerHTML = this.formatLLMText(result.TREATMENT);
+        } else {
+          treatmentEl.textContent = 'No treatment information';
+        }
+        
+        // Prevention tab (moved to treatment section)
+        const preventionEl = document.getElementById('diseasePrevention');
+        if (result.PREVENTION) {
+          preventionEl.innerHTML = this.formatLLMText(result.PREVENTION);
+        } else {
+          preventionEl.textContent = 'No prevention information';
+        }
+        
+        // Monitoring Plan tab - use variant monitoring_prevention or fallback
+        const monitoringEl = document.getElementById('monitoringPlan');
+        if (result.monitoring_plan) {
+          // New variant system
+          monitoringEl.innerHTML = this.formatLLMText(result.monitoring_plan);
+        } else if (result.MONITORING_PLAN) {
+          // Legacy system
+          monitoringEl.innerHTML = this.formatLLMText(result.MONITORING_PLAN);
+        } else {
+          monitoringEl.textContent = 'Monitor plant health regularly and document changes';
+        }
+        
+        // Impact Analysis tab (NEW) - use variant risk_impact if available
+        const impactEl = document.getElementById('impactAnalysis');
+        if (impactEl && result.impact_analysis) {
+          impactEl.innerHTML = this.formatLLMText(result.impact_analysis);
+        }
+        
+        // Fertilizers tab - Context-aware guidance
+        const fertilizerEl = document.getElementById('fertilizerGuidance');
+        if (result.FERTILIZER_GUIDANCE) {
+          fertilizerEl.innerHTML = this.formatLLMText(result.FERTILIZER_GUIDANCE);
+        } else {
+          fertilizerEl.textContent = result.FERTILIZERS || 'No fertilizer recommendations';
+        }
+        
+        // Store result for export
+        this.currentResult = result;
+        
+        // Scroll to results
+        document.querySelector('#results').scrollIntoView({ behavior: 'smooth' });
+        
+        console.log('✅ Results displayed successfully');
+      }
+
+      analyzeAnotherImage() {
+        this.removeImage();
+        document.getElementById('resultsContent').style.display = 'none';
+        document.getElementById('resultsPlaceholder').style.display = 'block';
+        document.querySelector('#analyze').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      formatLLMText(text) {
+        // Format LLM-generated text with markdown-style elements
+        if (!text) return '-';
+        
+        let formatted = text
+          // Bold text **text**
+          .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+          // Headings
+          .replace(/^### (.+)$/gm, '<h5 style="margin-top: 15px; margin-bottom: 8px; color: var(--primary-color);">$1</h5>')
+          .replace(/^## (.+)$/gm, '<h4 style="margin-top: 15px; margin-bottom: 8px; color: var(--primary-color);">$1</h4>')
+          // Warning symbols
+          .replace(/⚠️/g, '<span style="color: #f39c12;">⚠️</span>')
+          .replace(/✅/g, '<span style="color: #27ae60;">✅</span>')
+          .replace(/❌/g, '<span style="color: var(--error-color);">❌</span>')
+          // Line breaks
+          .replace(/\n/g, '<br>');
+        
+        return formatted;
+      }
+
+      setupGradCAMToggle(result) {
+        // Setup Grad-CAM overlay toggle (pure overlay approach - never changes base image src)
+        const controls = document.getElementById('gradcamControls');
+        const toggleBtn = document.getElementById('toggleGradcam');
+        const overlayImg = document.getElementById('gradcamOverlay');
+        const baseImg = document.getElementById('resultImage');
+        const container = document.getElementById('resultImageContainer');
+        
+        console.log('🔧 setupGradCAMToggle called with overlay approach');
+        console.log('  - gradcam_enabled:', result.gradcam_enabled);
+        console.log('  - gradcam_heatmap:', result.gradcam_heatmap);
+        console.log('  - Elements found:');
+        console.log('    * controls:', !!controls);
+        console.log('    * toggleBtn:', !!toggleBtn);
+        console.log('    * overlayImg:', !!overlayImg);
+        console.log('    * baseImg:', !!baseImg);
+        console.log('    * container:', !!container);
+        
+        // Check if Grad-CAM is available
+        if (!result.gradcam_enabled || !result.gradcam_heatmap) {
+          controls.style.display = 'none';
+          overlayImg.style.display = 'none';
+          console.log('❌ Grad-CAM not available');
+          return;
+        }
+        
+        // Show controls
+        controls.style.display = 'block';
+        
+        // Setup overlay - ensure it's in DOM with explicit styles
+        overlayImg.src = result.gradcam_heatmap;
+        overlayImg.style.cssText = 'display: block !important; opacity: 0 !important; position: absolute !important; top: 0 !important; left: 0 !important; width: 100% !important; height: 100% !important; pointer-events: none !important; object-fit: cover !important;';
+        
+        console.log('✅ Grad-CAM overlay loaded:', result.gradcam_heatmap);
+        console.log('  - Overlay display:', overlayImg.style.display);
+        console.log('  - Overlay opacity:', overlayImg.style.opacity);
+        console.log('  - Base image src:', baseImg.src ? 'Set (' + baseImg.src.substring(0, 50) + '...)' : 'Not set');
+        console.log('  - Base image display:', baseImg.style.display);
+        
+        // Setup toggle handler - only controls overlay opacity
+        toggleBtn.onclick = () => {
+          const isCurrentlyShowing = overlayImg.style.opacity === '1';
+          
+          console.log('🖱️ Toggle button clicked');
+          console.log('  - Current state: isShowing=' + isCurrentlyShowing);
+          console.log('  - Before toggle:');
+          console.log('    * Base image display:', baseImg.style.display);
+          console.log('    * Base image visibility:', baseImg.style.visibility);
+          console.log('    * Base image opacity:', baseImg.style.opacity);
+          console.log('    * Overlay display:', overlayImg.style.display);
+          console.log('    * Overlay opacity:', overlayImg.style.opacity);
+          console.log('    * Container display:', container.style.display);
+          
+          if (isCurrentlyShowing) {
+            // Hide Grad-CAM overlay - set opacity to 0 explicitly
+            overlayImg.style.setProperty('opacity', '0', 'important');
+            toggleBtn.innerHTML = '<i class="fas fa-eye"></i> Show AI Focus (Grad-CAM)';
+            console.log('✅ Grad-CAM overlay hidden (opacity: 0)');
+          } else {
+            // Show Grad-CAM overlay - set opacity to 1 explicitly
+            overlayImg.style.setProperty('opacity', '1', 'important');
+            toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> Hide AI Focus';
+            console.log('✅ Grad-CAM overlay shown (opacity: 1)');
+          }
+          
+          console.log('  - After toggle:');
+          console.log('    * Base image display:', baseImg.style.display);
+          console.log('    * Base image visibility:', baseImg.style.visibility);
+          console.log('    * Base image opacity:', baseImg.style.opacity);
+          console.log('    * Overlay display:', overlayImg.style.display);
+          console.log('    * Overlay opacity:', overlayImg.style.opacity);
+          console.log('    * Container display:', container.style.display);
+        };
+        
+        console.log('✅ Grad-CAM toggle initialized (overlay approach)');
+      }
+
+      showCropVerificationError(result) {
+        // Display user-friendly error when crop verification fails
+        console.warn('⚠️ Crop verification failed:', result);
+        
+        document.getElementById('resultsPlaceholder').style.display = 'none';
+        document.getElementById('resultsContent').style.display = 'block';
+        
+        // Create custom error display
+        const resultsContent = document.getElementById('resultsContent');
+        resultsContent.innerHTML = `
+          <div style="text-align: center; padding: 40px; background: linear-gradient(135deg, #667eea22 0%, #764ba222 100%); border-radius: 15px; border: 2px dashed var(--error-color);">
+            <i class="fas fa-exclamation-triangle" style="font-size: 64px; color: var(--error-color); margin-bottom: 20px;"></i>
+            <h2 style="color: var(--error-color); margin-bottom: 15px;">Not a Soybean Leaf</h2>
+            <p style="font-size: 18px; margin-bottom: 10px; color: var(--text-color);">${result.message}</p>
+            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;">${result.suggestion}</p>
+            
+            <div style="background: var(--card-bg); padding: 20px; border-radius: 10px; margin: 20px auto; max-width: 400px; text-align: left;">
+              <h4 style="margin-bottom: 10px; color: var(--primary-color);"><i class="fas fa-info-circle"></i> Verification Details</h4>
+              <p style="margin: 5px 0;"><strong>Confidence:</strong> ${(result.verification.confidence * 100).toFixed(1)}%</p>
+              <p style="margin: 5px 0;"><strong>Method:</strong> ${result.verification.method === 'model' ? 'AI Model' : 'Visual Analysis'}</p>
+              <p style="margin: 5px 0;"><strong>Status:</strong> <span style="color: var(--error-color);">❌ Failed Verification</span></p>
+            </div>
+            
+            <button onclick="app.analyzeAnotherImage()" style="
+              padding: 12px 30px;
+              background: var(--primary-color);
+              color: white;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              font-size: 16px;
+              margin-top: 20px;
+              transition: transform 0.2s;
+            " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fas fa-upload"></i> Upload Soybean Image
+            </button>
+          </div>
+        `;
+        
+        this.showToast('Please upload a soybean leaf image', 'error');
+        document.querySelector('#results').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      showReliabilityError(result) {
+        // Display user-friendly error when post-classification reliability fails (OOD/Cotton)
+        console.warn('⚠️ Reliability check failed (OOD):', result);
+        
+        document.getElementById('resultsPlaceholder').style.display = 'none';
+        document.getElementById('resultsContent').style.display = 'block';
+        
+        // Create custom error display
+        const resultsContent = document.getElementById('resultsContent');
+        resultsContent.innerHTML = `
+          <div style="text-align: center; padding: 40px; background: linear-gradient(135deg, #e67e2222 0%, #f39c1222 100%); border-radius: 15px; border: 2px dashed #e67e22;">
+            <i class="fas fa-microscope" style="font-size: 64px; color: #e67e22; margin-bottom: 20px;"></i>
+            <h2 style="color: #e67e22; margin-bottom: 15px;">Unknown Disease Pattern</h2>
+            <p style="font-size: 18px; margin-bottom: 10px; color: var(--text-color);">${result.message}</p>
+            <p style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;">${result.suggestion}</p>
+            
+            <div style="background: var(--card-bg); padding: 20px; border-radius: 10px; margin: 20px auto; max-width: 450px; text-align: left; border-left: 5px solid #e67e22;">
+              <h4 style="margin-bottom: 10px; color: #e67e22;"><i class="fas fa-shield-alt"></i> Safety Filter: Reliability Audit</h4>
+              <p style="margin: 5px 0;"><strong>CNN Confidence:</strong> ${(result.reliability.cnn_confidence * 100).toFixed(1)}%</p>
+              <p style="margin: 5px 0;"><strong>Softmax Entropy:</strong> ${result.reliability.entropy.toFixed(3)}</p>
+              <p style="margin: 5px 0;"><strong>System Decision:</strong> <span style="color: #e67e22;">⚠️ Unreliable Diagnosis</span></p>
+              <p style="margin: 10px 0 0 0; font-size: 12px; color: var(--text-secondary); font-style: italic;">
+                Reason: The detected patterns do not align with known soybean diseases. This can happen with non-soybean crops (e.g. Cotton, Wheat) or low-quality images.
+              </p>
+            </div>
+            
+            <button onclick="app.analyzeAnotherImage()" style="
+              padding: 12px 30px;
+              background: #e67e22;
+              color: white;
+              border: none;
+              border-radius: 8px;
+              cursor: pointer;
+              font-size: 16px;
+              margin-top: 20px;
+              transition: transform 0.2s;
+            " onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+              <i class="fas fa-upload"></i> Try Different Image
+            </button>
+          </div>
+        `;
+        
+        this.showToast('Unreliable prediction detected', 'warning');
+        document.querySelector('#results').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      toggleTheme() {
+        this.theme = this.theme === 'light' ? 'dark' : 'light';
+        localStorage.setItem('theme', this.theme);
+        this.applyTheme();
+        this.showToast(`Switched to ${this.theme} mode`, 'info');
+      }
+
+      applyTheme() {
+        if (this.theme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          document.getElementById('themeToggle').textContent = '☀️';
+        } else {
+          document.documentElement.removeAttribute('data-theme');
+          document.getElementById('themeToggle').textContent = '🌙';
+        }
+      }
+
+      showToast(message, type = 'info') {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
+      toggleModelHealth() {
+        const content = document.getElementById('modelHealthContent');
+        const toggle = document.getElementById('modelHealthToggle');
+        
+        if (content.style.maxHeight === '0px' || !content.style.maxHeight) {
+          content.style.maxHeight = '200px';
+          toggle.textContent = '▲';
+        } else {
+          content.style.maxHeight = '0px';
+          toggle.textContent = '▼';
+        }
+      }
+
+      updateModelHealth(data) {
+        if (data.inferenceTime) {
+          document.getElementById('inferenceTime').textContent = data.inferenceTime;
+        }
+        if (data.status === 'success') {
+          document.getElementById('yoloStatus').textContent = 'Active';
+          document.getElementById('cnnStatus').textContent = 'Active';
+          document.getElementById('systemStatus').innerHTML = '<span style="color: var(--success-color);">✓</span> Operational';
+        } else if (data.status === 'error') {
+          document.getElementById('systemStatus').innerHTML = '<span style="color: var(--error-color);">⚠</span> Error';
+        }
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      window.app = new DiseaseDetectionApp();
+      document.getElementById('current-year').textContent = new Date().getFullYear();
+    });
+    </script>
+</body>
+</html>

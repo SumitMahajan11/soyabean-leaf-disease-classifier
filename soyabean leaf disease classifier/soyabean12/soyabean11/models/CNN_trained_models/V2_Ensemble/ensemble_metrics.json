@@ -1,0 +1,11 @@
+{
+    "ensemble_accuracy": 0.9311424100156495,
+    "best_weights": [
+        0.5,
+        0.5
+    ],
+    "models": [
+        "EfficientNet_B4",
+        "ResNet152_V2"
+    ]
+}

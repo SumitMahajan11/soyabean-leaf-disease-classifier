@@ -1,0 +1,42 @@
+{
+  "name": "Soybean Disease Detection AI",
+  "short_name": "SoybeanDetect",
+  "description": "Advanced AI-powered system for detecting and classifying soybean diseases using YOLO and EfficientNet",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#2e7d32",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/static/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["agriculture", "productivity", "utilities"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Analyze Image",
+      "short_name": "Analyze",
+      "description": "Upload and analyze soybean leaf image",
+      "url": "/#analyze",
+      "icons": [
+        {
+          "src": "/static/icon-192.png",
+          "sizes": "192x192"
+        }
+      ]
+    }
+  ],
+  "permissions": ["camera", "storage"],
+  "prefer_related_applications": false
+}

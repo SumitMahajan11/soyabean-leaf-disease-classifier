@@ -1,0 +1,4 @@
+Model: ResNet
+Best Accuracy: 0.8447
+Best Epoch: 16
+Training completed at: 2026-01-04 14:11:21.028036
