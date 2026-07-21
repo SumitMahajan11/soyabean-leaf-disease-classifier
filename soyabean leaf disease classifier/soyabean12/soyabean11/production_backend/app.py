@@ -6,6 +6,7 @@ import os
 import sys
 import json
 import torch
+torch.set_num_threads(2)
 import torch.nn as nn
 from torchvision import transforms, models
 from PIL import Image

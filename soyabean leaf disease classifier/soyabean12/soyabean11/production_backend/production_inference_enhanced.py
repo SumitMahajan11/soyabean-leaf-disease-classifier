@@ -106,18 +106,12 @@ class SoybeanDiseaseClassifierEnhanced:
             checkpoint = torch.load(path_to_load, map_location=self.device)
             state_dict = checkpoint['model_state_dict'] if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint else checkpoint
             model.load_state_dict(state_dict)
+            model.to(self.device)
+            model.eval()
+            return model
         else:
-            print(f"⚠️ Checkpoint not found at {checkpoint_path}. Using torchvision default pretrained weights.")
-            model = models.resnet152(weights=models.ResNet152_Weights.DEFAULT)
-            in_features = model.fc.in_features
-            model.fc = nn.Sequential(
-                nn.Dropout(p=0.4),
-                nn.Linear(in_features, self.num_classes)
-            )
-
-        model.to(self.device)
-        model.eval()
-        return model
+            print(f"⚠️ ResNet152 Checkpoint not found at {checkpoint_path}. Skipping ResNet152 to conserve RAM.")
+            return None
 
     def _preprocess_image(self, image):
         """Preprocessing for 512x512 models"""
@@ -144,13 +138,14 @@ class SoybeanDiseaseClassifierEnhanced:
             
             with autocast_ctx:
                 eff_out = self.effnet(input_tensor)
-                res_out = self.resnet(input_tensor)
-                
                 eff_probs = torch.softmax(eff_out, dim=1)
-                res_probs = torch.softmax(res_out, dim=1)
                 
-                # Weighted Ensemble
-                ensemble_probs = (self.weights[0] * eff_probs) + (self.weights[1] * res_probs)
+                if self.resnet is not None:
+                    res_out = self.resnet(input_tensor)
+                    res_probs = torch.softmax(res_out, dim=1)
+                    ensemble_probs = (self.weights[0] * eff_probs) + (self.weights[1] * res_probs)
+                else:
+                    ensemble_probs = eff_probs
                 
             confidence, predicted_idx = torch.max(ensemble_probs, dim=1)
             confidence = confidence.item()
