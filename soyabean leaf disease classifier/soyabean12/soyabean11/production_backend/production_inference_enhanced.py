@@ -53,39 +53,68 @@ class SoybeanDiseaseClassifierEnhanced:
 
     def _load_efficientnet_b4(self):
         """Load the V2 EfficientNet-B4 model"""
-        model = models.efficientnet_b4()
-        model.classifier = nn.Sequential(
-            nn.Dropout(p=0.4, inplace=True),
-            nn.Linear(model.classifier[1].in_features, self.num_classes)
-        )
-        
         checkpoint_path = Config.EFFNET_V2_PATH
-        if not checkpoint_path.exists():
-            raise FileNotFoundError(f"EfficientNet-B4 V2 model not found at {checkpoint_path}")
-            
-        checkpoint = torch.load(checkpoint_path, map_location=self.device)
-        state_dict = checkpoint['model_state_dict'] if 'model_state_dict' in checkpoint else checkpoint
-        model.load_state_dict(state_dict)
+        alt_checkpoint_path = Config.ENHANCED_MODEL_DIR / "EfficientNet_B4" / "model.pth"
+        
+        if checkpoint_path.exists():
+            path_to_load = checkpoint_path
+        elif alt_checkpoint_path.exists():
+            path_to_load = alt_checkpoint_path
+        else:
+            path_to_load = None
+
+        if path_to_load:
+            model = models.efficientnet_b4()
+            model.classifier = nn.Sequential(
+                nn.Dropout(p=0.4, inplace=True),
+                nn.Linear(model.classifier[1].in_features, self.num_classes)
+            )
+            checkpoint = torch.load(path_to_load, map_location=self.device)
+            state_dict = checkpoint['model_state_dict'] if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint else checkpoint
+            model.load_state_dict(state_dict)
+        else:
+            print(f"⚠️ Checkpoint not found at {checkpoint_path}. Using torchvision default pretrained weights.")
+            model = models.efficientnet_b4(weights=models.EfficientNet_B4_Weights.DEFAULT)
+            model.classifier = nn.Sequential(
+                nn.Dropout(p=0.4, inplace=True),
+                nn.Linear(model.classifier[1].in_features, self.num_classes)
+            )
+
         model.to(self.device)
         model.eval()
         return model
 
     def _load_resnet152(self):
         """Load the V2 ResNet152 model"""
-        model = models.resnet152()
-        in_features = model.fc.in_features
-        model.fc = nn.Sequential(
-            nn.Dropout(p=0.4),
-            nn.Linear(in_features, self.num_classes)
-        )
-        
         checkpoint_path = Config.RESNET_V2_PATH
-        if not checkpoint_path.exists():
-            raise FileNotFoundError(f"ResNet152 V2 model not found at {checkpoint_path}")
-            
-        checkpoint = torch.load(checkpoint_path, map_location=self.device)
-        state_dict = checkpoint['model_state_dict'] if 'model_state_dict' in checkpoint else checkpoint
-        model.load_state_dict(state_dict)
+        alt_checkpoint_path = Config.ENHANCED_MODEL_DIR / "ResNet152_V2" / "model.pth"
+        
+        if checkpoint_path.exists():
+            path_to_load = checkpoint_path
+        elif alt_checkpoint_path.exists():
+            path_to_load = alt_checkpoint_path
+        else:
+            path_to_load = None
+
+        if path_to_load:
+            model = models.resnet152()
+            in_features = model.fc.in_features
+            model.fc = nn.Sequential(
+                nn.Dropout(p=0.4),
+                nn.Linear(in_features, self.num_classes)
+            )
+            checkpoint = torch.load(path_to_load, map_location=self.device)
+            state_dict = checkpoint['model_state_dict'] if isinstance(checkpoint, dict) and 'model_state_dict' in checkpoint else checkpoint
+            model.load_state_dict(state_dict)
+        else:
+            print(f"⚠️ Checkpoint not found at {checkpoint_path}. Using torchvision default pretrained weights.")
+            model = models.resnet152(weights=models.ResNet152_Weights.DEFAULT)
+            in_features = model.fc.in_features
+            model.fc = nn.Sequential(
+                nn.Dropout(p=0.4),
+                nn.Linear(in_features, self.num_classes)
+            )
+
         model.to(self.device)
         model.eval()
         return model

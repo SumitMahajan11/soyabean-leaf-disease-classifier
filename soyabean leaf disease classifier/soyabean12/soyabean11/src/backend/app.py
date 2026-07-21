@@ -23,8 +23,13 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Add the code directory to path to import production modules
-sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'code'))
+# Add current directory and code directory to path to import production modules
+current_dir = os.path.dirname(os.path.abspath(__file__))
+if current_dir not in sys.path:
+    sys.path.insert(0, current_dir)
+code_dir = os.path.abspath(os.path.join(current_dir, '..', 'code'))
+if code_dir not in sys.path:
+    sys.path.insert(0, code_dir)
 
 # Import configuration and modules
 from config import Config
