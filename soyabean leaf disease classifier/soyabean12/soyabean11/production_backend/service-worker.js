@@ -3,9 +3,9 @@
  * Enables offline UI access and caching
  */
 
-const CACHE_NAME = 'soybean-detect-v2.3.0';
-const STATIC_CACHE = 'static-v2';
-const DYNAMIC_CACHE = 'dynamic-v2';
+const CACHE_NAME = 'soybean-detect-v2.4.0';
+const STATIC_CACHE = 'static-v3';
+const DYNAMIC_CACHE = 'dynamic-v3';
 
 // Assets to cache immediately
 const PRECACHE_ASSETS = [
