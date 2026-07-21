@@ -6,3 +6,4 @@ ultralytics==8.0.184
 Pillow==10.0.0
 numpy==1.24.3
 git+https://github.com/openai/CLIP.git
+gunicorn==23.0.0
