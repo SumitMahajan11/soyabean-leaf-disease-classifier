@@ -496,7 +496,7 @@ class SoybeanDiseaseDetectionAPI:
             
             # Generate Grad-CAM visualization (Explainability Layer)
             gradcam_result = None
-            if getattr(Config, "ENABLE_GRADCAM", True):
+            if getattr(Config, "ENABLE_GRADCAM", False):
                 try:
                     logger.info("Generating Grad-CAM heatmap visualization...")
                     # Get the cropped image used for classification

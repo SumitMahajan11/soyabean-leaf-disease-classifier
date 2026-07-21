@@ -25,8 +25,8 @@ class Config:
     YOLO_IOU_THRESHOLD = 0.45
     MAX_DETECTIONS = 20  # Increased to capture all potential symptoms per image
         
-    # Grad-CAM / explainability
-    ENABLE_GRADCAM = True  # Enable Grad-CAM visual explanations by default
+    # Grad-CAM / explainability (Disabled by default in CPU production to prevent worker timeouts)
+    ENABLE_GRADCAM = os.environ.get("ENABLE_GRADCAM", "false").lower() in ("true", "1", "t")
     ENABLE_SHADOW_REMOVAL = False  # Keep disabled as requested
         
     # Classification parameters
