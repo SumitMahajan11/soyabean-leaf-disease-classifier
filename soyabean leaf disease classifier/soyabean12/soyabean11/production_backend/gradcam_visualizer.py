@@ -6,7 +6,10 @@ import torch
 import torch.nn.functional as F
 import numpy as np
 from PIL import Image
-import cv2
+try:
+    import cv2
+except Exception:
+    cv2 = None
 import logging
 import base64
 from io import BytesIO
@@ -135,20 +138,26 @@ class GradCAMVisualizer:
             else:
                 img = original_image.copy()
             
-            # Resize heatmap to match image size
-            heatmap_resized = cv2.resize(heatmap, (img.shape[1], img.shape[0]))
-            
-            # Convert heatmap to RGB using colormap
-            heatmap_colored = cv2.applyColorMap(
-                (heatmap_resized * 255).astype(np.uint8), 
-                colormap
-            )
-            heatmap_colored = cv2.cvtColor(heatmap_colored, cv2.COLOR_BGR2RGB)
-            
-            # Blend images
-            overlayed = (alpha * heatmap_colored + (1 - alpha) * img).astype(np.uint8)
-            
-            return Image.fromarray(overlayed)
+            if cv2 is not None:
+                # Resize heatmap to match image size
+                heatmap_resized = cv2.resize(heatmap, (img.shape[1], img.shape[0]))
+                
+                # Convert heatmap to RGB using colormap
+                heatmap_colored = cv2.applyColorMap(
+                    (heatmap_resized * 255).astype(np.uint8), 
+                    colormap if colormap is not None else 2 # cv2.COLORMAP_JET
+                )
+                heatmap_colored = cv2.cvtColor(heatmap_colored, cv2.COLOR_BGR2RGB)
+                overlayed = (alpha * heatmap_colored + (1 - alpha) * img).astype(np.uint8)
+                return Image.fromarray(overlayed)
+            else:
+                # Fallback overlay using PIL + NumPy
+                pil_hm = Image.fromarray((heatmap * 255).astype(np.uint8)).resize((img.shape[1], img.shape[0]), Image.BILINEAR)
+                np_hm = np.array(pil_hm)
+                colored = np.zeros_like(img)
+                colored[:, :, 0] = np_hm  # Red channel tint
+                overlayed = (alpha * colored + (1 - alpha) * img).astype(np.uint8)
+                return Image.fromarray(overlayed)
             
         except Exception as e:
             logger.error(f"Error overlaying heatmap: {e}")
