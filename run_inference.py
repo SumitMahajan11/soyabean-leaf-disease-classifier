@@ -56,8 +56,8 @@ def load_models(device):
     # Define the model architecture (same as training)
     from torchvision.models import efficientnet_b3
     classifier = efficientnet_b3(weights=None)
-    # Modify the final layer for 12 soybean disease classes
-    classifier.classifier[1] = torch.nn.Linear(classifier.classifier[1].in_features, 12)
+    # Modify the final layer for 17 soybean disease classes
+    classifier.classifier[1] = torch.nn.Linear(classifier.classifier[1].in_features, 17)
     
     # Load the checkpoint
     checkpoint = torch.load(str(efficientnet_path), map_location=device, weights_only=False)
@@ -76,11 +76,12 @@ def load_models(device):
     classifier.to(device)
     classifier.eval()
     
-    # Disease classes
+    # Disease classes (17 classes matching dataset.yaml)
     disease_classes = [
-        'Bacterial Blight', 'Brown Spot', 'Caterpillar Pest', 'Ferrugen',
-        'Healthy', 'Mosaic Virus', 'Rust', 'Septoria', 
-        'Southern Blight', 'Sudden Death Syndrome', 'Vein Necrosis', 'Yellow Mosaic'
+        'anthracnose', 'bacterial_blight', 'bacterial_pustule', 'brown_spot',
+        'cercospora_leaf_blight', 'downey_mildew', 'frogeye_leaf_spot', 'healthy',
+        'insects', 'mosaic_virus', 'nutrient_deficiencies', 'powdery_mildew',
+        'rust', 'southern_blight', 'sudden_death_syndrome', 'target_spot', 'yellow_mosaic'
     ]
     
     return yolo_model, classifier, disease_classes, device
