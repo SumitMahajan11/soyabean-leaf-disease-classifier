@@ -162,7 +162,7 @@ except Exception as e:
 
 ✅ **No YOLO retraining** - Detection model untouched  
 ✅ **No EfficientNet retraining** - Classification model untouched  
-✅ **No accuracy reduction** - Disease prediction accuracy preserved (98.14%)  
+✅ **No accuracy reduction** - Disease prediction accuracy preserved (92.96% accuracy / 92.29% F1)  
 ✅ **Crop identifier preserved** - Safety gate remains active  
 ✅ **Logic-level fix only** - No model modifications  
 

@@ -1,7 +1,7 @@
 """
 Soybean Disease Detection - End-to-End Inference Script
-Input Image → YOLO Detection (96.95% mAP) → Crop Detection → 
-Enhanced Preprocessing → Enhanced EfficientNet Classification (98.14% accuracy) → JSON Output
+Input Image → YOLO Detection → Crop Detection → 
+Enhanced Preprocessing → Enhanced EfficientNet Classification (92.96% test accuracy / 92.29% F1) → JSON Output
 """
 
 import os
@@ -189,8 +189,7 @@ def run_end_to_end_inference(image_path):
         'summary': {
             'total_detections': len(results),
             'model_performance': {
-                'detector_accuracy': '96.95% mAP',
-                'classifier_accuracy': '98.14%'
+                'classifier_accuracy': '92.96% (92.29% weighted F1)'
             }
         }
     }

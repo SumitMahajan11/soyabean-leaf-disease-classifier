@@ -5,8 +5,8 @@ A production-ready system for detecting soybean leaf diseases using YOLO detecti
 ## Features
 
 - **Soybean Crop Verification**: Uses 3,256 reference embeddings to verify uploaded images are soybean leaves before processing
-- **YOLO Detection**: 96.95% mAP for detecting leaf regions
-- **EfficientNet Classification**: 98.14% accuracy for 12 soybean disease classes
+- **YOLO Detection**: Object detection & leaf bounding box localization
+- **EfficientNet Classification**: 92.96% test accuracy / 92.29% weighted F1 on 639-sample test set (sourced from reports/metrics/efficientnet_b4_test_metrics.json)
 - **LLM Reasoning**: Dynamic treatment recommendations
 - **Grad-CAM Visualization**: Explainable AI heatmaps
 

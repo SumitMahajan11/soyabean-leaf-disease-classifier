@@ -42,8 +42,8 @@ All identified bugs have been fixed:
 TESTING RESULTS:
 ================
 ✓ Backend imports successfully
-✓ YOLO model (96.95% mAP) loads correctly  
-✓ EfficientNet model (98.14% accuracy) loads correctly
+✓ YOLO model loads correctly  
+✓ EfficientNet model (92.96% accuracy / 92.29% F1) loads correctly
 ✓ Crop identifier initializes on CUDA
 ✓ LLM reasoning layer initializes
 ✓ Grad-CAM visualizer ready
@@ -55,8 +55,8 @@ SYSTEM STATUS: FULLY OPERATIONAL
 ================================
 Version: 2.2.0
 All 8 layers active and bug-free:
-1. YOLO Detection (96.95% mAP)
-2. EfficientNet Classification (98.14%)
+1. YOLO Detection (Bounding Box Localization)
+2. EfficientNet Classification (92.96% Accuracy / 92.29% F1)
 3. Crop Identifier (Safety Gate)
 4. LLM Reasoning (Intelligence)
 5. Grad-CAM (Explainability)
